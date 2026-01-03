@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ۱. تعریف متغیرهای مرکزی با ساختار منظم */
+:root {
+  /* پالت رنگی اصلی (Light Mode) */
+  --bg-color: #ffffff;
+  --card-bg: #ffffff;
+  --text-color: #1e2329; 
+  --secondary-text: #707a8a;
+  --border-color: #eaecef;
+  --accent-color: #fcd535;
+  --accent-hover: #f0b90b;
+  --table-hover: #f8f9fa;
+  --input-bg: #eeeeee;
+  --shadow: rgba(0,0,0,0.05);
+  
+  /* رنگ‌های شاخص بازار */
+  --color-up: #0ecb81;
+  --color-down: #f6465d;
+
+  /* فواصل و زمان‌بندی‌های ثابت */
+  --transition-speed: 300ms;
+}
+
+/* ۲. تنظیمات حالت تاریک  */
+.dark, [data-theme='dark'] {
+  --bg-color: #0b0e11;
+  --card-bg: #1e2329;
+  --text-color: #eaecef; 
+  --secondary-text: #929aa5;
+  --border-color: #2b3139;
+  --table-hover: #2b3139;
+  --input-bg: #1e2329;
+  --shadow: rgba(0,0,0,0.4);
+}
+
+@layer base {
+  /* ۳. بهینه‌سازی بدنه اصلی  */
+  body {
+    @apply transition-colors duration-300 antialiased;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* این خط باعث می‌شود تمام متن‌های فرزند به صورت پیش‌فرض رنگ درست بگیرند */
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  /* ۴. رفع مشکل رنگ تگ‌های متنی به صورت سراسری */
+  h1, h2, h3, h4, h5, h6, p, span, div, i {
+    color: inherit; /* اجازه می‌دهد رنگ از والد (Body یا Card) ارث‌بری شود */
+    @apply border-[var(--border-color)];
+  }
+
+  /* بهینه‌سازی اسکرول‌بار برای هماهنگی با تم */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-700 rounded-full;
+  }
+}
+
+@layer components {
+  .btn-yellow {
+    background-color: var(--accent-color);
+    color: #1e2329;
+    @apply px-6 py-3 rounded-lg font-bold transition-all duration-300 
+           hover:bg-[var(--accent-hover)] hover:-translate-y-0.5 
+           inline-flex items-center justify-center text-center cursor-pointer;
+  }
+
+  /* ۶. کارت‌های سفارشی با مدیریت سایه و رنگ */
+  .custom-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color); 
+    @apply rounded-[24px] transition-all duration-300 hover:shadow-2xl;
+    box-shadow: 0 10px 30px -10px var(--shadow);
+  }
+
+  /* ۷. استایل‌های وضعیت بازار */
+  .price-up { color: var(--color-up); @apply font-semibold; }
+  .price-down { color: var(--color-down); @apply font-semibold; }
+  
+  /* تراز عمقی متن‌های ثانویه */
+  .text-desc {
+    color: var(--secondary-text);
+    @apply text-sm leading-relaxed;
+  }
+}
+
+/* ۸. کلاس‌های کاربردی کوچک برای بهینه‌سازی نهایی */
+.transition-smooth {
+  transition: all var(--transition-speed) ease-in-out;
+}
