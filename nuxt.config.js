@@ -25,10 +25,6 @@ export default defineNuxtConfig({
     }
   },
 
-
-
-  
-
   // ۶. فعال‌سازی ماژول تیلویند
   modules: ['@nuxtjs/tailwindcss']
 })
