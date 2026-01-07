@@ -1,9 +1,9 @@
 <template>
   <section id="faq" class="faq-section">
-    <div class="max-w-[900px] mx-auto px-6">
+    <div class="faq-container">
       
       <h2 class="faq-main-title">
-        Frequently Asked <span class="text-accent">Questions</span>
+        Frequently Asked Questions About Bitcoin
       </h2>
       
       <AppFaqData v-slot="{ faqs }">
@@ -24,6 +24,7 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 
 const activeIndex = ref(null)
 
@@ -34,27 +35,30 @@ const toggleFaq = (index) => {
 
 <style scoped>
 .faq-section {
-  @apply py-20 md:py-32 transition-colors duration-300;
+  /* استفاده از متغیر تم برای پس‌زمینه */
+  @apply w-full py-16 md:py-24 transition-colors duration-500;
   background-color: var(--bg-color);
 }
 
+.faq-container {
+  /* مدیریت عرض کانتینر در یک کلاس واحد */
+  @apply w-full px-4 md:px-10 lg:px-16 mx-auto;
+}
+
 .faq-main-title {
-  @apply text-3xl md:text-5xl font-[900] text-center mb-16 tracking-tight;
+  @apply text-2xl md:text-3xl font-bold text-left mb-10 tracking-tight;
   color: var(--text-color);
 }
 
-.text-accent {
-  color: var(--accent-hover);
-}
-
 .faq-list {
-  @apply flex flex-col gap-4;
+  /* تنظیم فاصله بین آیتم‌ها مطابق تصویر */
+  @apply flex flex-col gap-2 md:gap-4 w-full;
 }
 
-/* بهینه‌سازی برای موبایل‌های بسیار کوچک */
-@media (max-width: 375px) {
+/* ریسپانسیو کردن تیتر برای موبایل‌های کوچک بدون استفاده از important */
+@media (max-width: 480px) {
   .faq-main-title {
-    @apply text-2xl;
+    @apply text-xl mb-6;
   }
 }
 </style>

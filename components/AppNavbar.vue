@@ -15,12 +15,7 @@
       </div>
 
       <div class="flex items-center gap-2 md:gap-5">
-        
-        <ClientOnly>
-          <div class="flex items-center justify-center min-w-[32px]">
-            <ThemeToggle type="icon" />
-          </div>
-        </ClientOnly>
+         
 
         <div class="flex items-center gap-1 md:gap-3">
           <button class="btn-login">Log In</button>
@@ -30,6 +25,8 @@
         <div class="nav-divider-tools">
           <button class="icon-tool-btn"><i class="fa-solid fa-download"></i></button>
           <button class="icon-tool-btn"><i class="fa-solid fa-globe"></i></button>
+          <button class="icon-tool-btn"><i class="fa-solid fa-sun"></i></button>
+
         </div>
       </div>
     </div>
@@ -54,7 +51,7 @@ if (process.client) {
 
 const menuData = [
   {
-    title: 'Start Trading',
+    title: 'Start Crypto Trading',
     links: [
       { title: 'Futures', desc: 'Contracts settled in cryptocurrency' },
       { title: 'Spot', desc: 'Buy and sell by advanced tools' },
@@ -62,14 +59,16 @@ const menuData = [
     ]
   },
   {
-    title: 'Markets',
+    title: 'Cryptocurrency Overview',
     items: [
       { title: 'Bitcoin price', hint: '→' }, 
       { title: 'Altcoin price' }, 
-      { title: 'Meme price' }
+      { title: 'Meme price' },
+      { title: 'Top Gainer/Losers'},
+      { title: 'New listings'}
     ]
   },
-  { title: 'Buy Crypto', items: ['Buy Bitcoin', 'Buy Ethereum'] },
+  { title: 'Buy Crypto', items: ['Buy Bitcoin', 'Buy Ethereum' , 'Buy memecoins' , 'Buy ai tokens','Sell crypto'] },
   { title: 'Earn' },
   { title: 'Info', items: ['About us', 'Fees', 'Security'] }
 ]
@@ -78,7 +77,7 @@ const menuData = [
 <style scoped>
 /* کانتینر اصلی */
 .nav-root {
-  @apply sticky top-0 z-[1000] h-16 flex items-center border-b transition-all duration-300;
+  @apply relative z-[1000] h-16 flex items-center border-b transition-all duration-300;
   background-color: var(--bg-color);
   border-color: var(--border-color);
   backdrop-filter: blur(12px);

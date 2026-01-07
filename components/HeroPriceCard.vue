@@ -13,7 +13,7 @@
         </span>
       </div>
       <a href="#" class="more-link">
-        More <i class="fa-solid fa-angle-right icon-arrow"></i>
+        View More <i class="fa-solid fa-angle-right icon-arrow"></i>
       </a>
     </div>
 
@@ -25,12 +25,7 @@
       >
         <div class="flex items-center gap-3">
           <div class="icon-wrapper">
-            <img 
-              :src="getIconUrl(coin.symbol)" 
-              class="coin-icon" 
-              :alt="coin.symbol"
-              @error="handleImageError"
-            >
+       
           </div>
           <div class="flex flex-col">
             <span class="symbol-text">{{ coin.symbol }}</span>
@@ -38,7 +33,7 @@
           </div>
         </div>
 
-        <div class="flex flex-col text-right">
+        <div class="flex flex-row text-right gap-7">
           <span class="price-text">${{ coin.price }}</span>
           <span :class="['change-text', coin.change >= 0 ? 'up' : 'down']">
             {{ coin.change >= 0 ? '+' : '' }}{{ coin.change }}%
@@ -66,11 +61,7 @@ const hotCoins = readonly([
   { symbol: 'ACA', name: 'Acala', price: '0.89', change: 4.16 }
 ])
 
-// توابع مدیریت تصویر
-const getIconUrl = (symbol) => `https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/${symbol.toLowerCase()}.png`
-const handleImageError = (e) => { 
-  e.target.src = 'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/generic.png' 
-}
+
 </script>
 
 <style scoped>
@@ -100,9 +91,12 @@ const handleImageError = (e) => {
 }
 
 .more-link {
-  @apply text-[var(--accent-hover)] text-sm font-bold flex items-center gap-1 transition-all;
+  @apply  text-sm flex items-center gap-1 transition-all;
+  color: gray
+
 }
-.more-link:hover { @apply gap-2; }
+.more-link:hover { @apply gap-2; 
+color : black}
 
 .coins-list { @apply space-y-1; }
 
@@ -135,8 +129,8 @@ const handleImageError = (e) => {
 .change-text {
   @apply text-xs font-medium;
 }
-.change-text.up { @apply text-green-500; }
-.change-text.down { @apply text-red-500; }
+.change-text.up { @apply text-green-500 bg-green-50 rounded-md;  }
+.change-text.down { @apply text-red-500 bg-red-50 rounded-md; }
 
 .icon-arrow { @apply transition-transform; }
 </style>

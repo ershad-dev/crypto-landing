@@ -5,14 +5,11 @@
         <h2 class="cta-title">
           Start Earning Today
         </h2>
-        <p class="cta-subtitle">
-          Join millions of users and start trading with the most secure platform.
-        </p>
       </div>
 
-      <div class="shrink-0">
-        <a href="#" class="btn-yellow cta-specific-btn">
-          Sign Up Now
+      <div class="cta-action">
+        <a href="#" class="btn-yellow-flat">
+          Sign Up
         </a>
       </div>
     </div>
@@ -21,35 +18,37 @@
 
 <style scoped>
 .cta-section {
-  @apply py-10 md:py-16 px-6 border-y mb-20 transition-colors duration-300;
-  background-color: var(--table-hover);
-  border-color: var(--border-color);
+  @apply py-10 md:py-12 px-6 -mt-[210px] transition-colors duration-500;
+  background-color: var(--card-bg); /* یا var(--bg-color) بسته به دیزاین شما */
 }
 
 .cta-container {
-  @apply max-w-[1250px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8;
-}
-
-.cta-content {
-  @apply text-center md:text-left;
+  @apply max-w-[1200px] mx-auto flex flex-col items-center justify-center gap-5;
 }
 
 .cta-title {
-  @apply text-2xl md:text-4xl font-[900] tracking-tight;
+  @apply text-2xl md:text-3xl font-bold tracking-tight;
   color: var(--text-color);
+  line-height: 1.2;
 }
 
-.cta-subtitle {
-  @apply mt-2 text-sm md:text-base;
-  color: var(--secondary-text);
+.btn-yellow-flat {
+  @apply px-10 py-2.5 text-base font-bold rounded-lg transition-all duration-200 inline-block;
+  background-color: #fcd535;
+  color: #1e2329; /* متن دکمه زرد همیشه تیره می‌ماند */
 }
 
-.cta-specific-btn {
-  @apply px-10 py-4 text-base rounded-xl shadow-xl shadow-yellow-500/10 active:scale-95;
+.btn-yellow-flat:hover {
+  @apply shadow-lg;
+  background-color: #f0b90b;
 }
 
-/* افکت هاور اختصاصی  */
-.cta-specific-btn:hover {
-  box-shadow: 0 10px 20px -5px rgba(240, 185, 11, 0.4);
+@media (max-width: 640px) {
+  .cta-section {
+    @apply py-8;
+  }
+  .cta-title {
+    @apply text-xl;
+  }
 }
 </style>

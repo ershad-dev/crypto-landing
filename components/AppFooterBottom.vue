@@ -2,7 +2,11 @@
   <div class="footer-bottom-container">
     
     <div class="social-links">
-      <a v-for="social in socialMedia" :key="social.icon" :href="social.link" class="social-icon">
+      <a v-for="social in socialMedia" 
+         :key="social.icon" 
+         :href="social.link" 
+         class="social-icon"
+         target="_blank">
         <i :class="social.icon"></i>
       </a>
     </div>
@@ -12,51 +16,56 @@
     </div>
 
     <div class="legal-links">
-      <a href="#" class="legal-item">Cookie Policy</a>
-      <a href="#" class="legal-item">User Agreement</a>
+      <a v-for="legal in legalLinks" 
+         :key="legal.text" 
+         :href="legal.link" 
+         class="legal-item">
+        {{ legal.text }}
+      </a>
     </div>
 
   </div>
 </template>
 
 <script setup>
-// مدیریت داده‌ها در اسکریپت
 const socialMedia = [
   { icon: 'fa-brands fa-instagram', link: '#' },
   { icon: 'fa-brands fa-telegram', link: '#' },
   { icon: 'fa-brands fa-x-twitter', link: '#' },
   { icon: 'fa-brands fa-youtube', link: '#' }
 ]
+
+const legalLinks = [
+  { text: 'Cookie Policy', link: '#' },
+  { text: 'User Agreement', link: '#' }
+]
 </script>
 
 <style scoped>
 .footer-bottom-container {
-  @apply flex flex-col md:flex-row justify-between items-center gap-6 py-8 border-t transition-colors duration-300;
+  /* تنظیم تراز و فاصله با رعایت رنگ بردر تم */
+  @apply flex flex-col md:flex-row justify-between items-center gap-6 py-8 border-t transition-colors duration-500 -mt-[70px];
   border-color: var(--border-color);
 }
 
-/* بخش شبکه‌های اجتماعی */
+/* آیکون‌های اجتماعی */
 .social-links {
   @apply flex gap-6 text-xl;
   color: var(--secondary-text);
 }
 
 .social-icon {
-  @apply transition-all duration-300 hover:scale-110;
+  @apply transition-all duration-300 hover:scale-110 hover:text-[var(--text-color)];
 }
 
-.social-icon:hover {
-  color: var(--accent-hover);
-}
-
-/* متن کپی‌رایت */
+/* استایل متن‌ها */
 .copyright-text {
-  @apply text-[13px];
+  @apply text-[13px] transition-colors duration-500;
   color: var(--secondary-text);
 }
 
 .author-name {
-  @apply font-extrabold transition-colors duration-300;
+  @apply font-black; /* استفاده از فونت سنگین برای تاکید */
   color: var(--text-color);
 }
 
@@ -70,10 +79,10 @@ const socialMedia = [
   @apply transition-colors duration-300 hover:text-[var(--text-color)];
 }
 
-/* بهینه‌سازی برای موبایل */
+/* بهینه‌سازی ریسپانسیو */
 @media (max-width: 768px) {
   .footer-bottom-container {
-    @apply text-center;
+    @apply py-10; /* فاصله بیشتر در موبایل برای خوانایی */
   }
 }
 </style>

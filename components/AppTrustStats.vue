@@ -1,104 +1,136 @@
 <template>
-  <div class="mb-32">
-    <h2 class="trust-header">
-      Why Millions Trust <span class="text-accent">US?</span>
-    </h2>
+  <div class="trust-section-root">
+    <h2 class="trust-header">Why Millions Trust US?</h2>
     
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-      <div v-for="(stat, index) in stats" :key="index" class="trust-item group">
-        
-        <div class="icon-box">
-          <div v-if="stat.isSpecial" class="secure-logo-circle">
-            <div class="diamond-shape"></div>
-          </div>
-          <i v-else :class="stat.icon" class="stat-icon-font"></i>
-        </div>
+    <swiper
+      :modules="[SwiperPagination]"
+      :slides-per-view="1" 
+      :space-between="0"
+      :centered-slides="true"
+      :pagination="{ clickable: true }"
+      :breakpoints="{
+        '1024': {
+          slidesPerView: 4,
+          spaceBetween: 24,
+          centeredSlides: false,
+          allowTouchMove: false
+        }
+      }"
+      class="trust-swiper"
+    >
+      <swiper-slide v-for="(stat, index) in stats" :key="index">
+        <div class="px-4 md:px-0 h-full">
+          <div class="trust-card">
+            <div class="icon-box">
+              <div v-if="stat.isSpecial" class="secure-logo-circle">
+                <div class="diamond-shape"></div>
+              </div>
+              <i v-else :class="stat.icon" class="stat-icon-font"></i>
+            </div>
 
-        <h3 class="trust-h3">{{ stat.title }}</h3>
-        <p class="trust-p">{{ stat.desc }}</p>
-      </div>
-    </div>
+            <h3 class="trust-h3">{{ stat.title }}</h3>
+            <p class="trust-p">{{ stat.desc }}</p>
+          </div>
+        </div>
+      </swiper-slide>
+    </swiper>
   </div>
 </template>
 
 <script setup>
+import { readonly } from 'vue';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+const SwiperPagination = Pagination;
 
 const stats = readonly([
-  { 
-    icon: 'fa-solid fa-medal', 
-    title: '24/7', 
-    desc: 'Customer Support in 40 languages' 
-  },
-  { 
-    isSpecial: true, 
-    title: 'Secure and Stable', 
-    desc: 'Advanced protection for your assets' 
-  },
-  { 
-    icon: 'fa-solid fa-calendar-check', 
-    title: '6 years with you', 
-    desc: 'Reliable service since the beginning' 
-  },
-  { 
-    icon: 'fa-solid fa-bolt', 
-    title: 'Trade Fast', 
-    desc: 'High-performance matching engine' 
-  }
-])
+  { icon: 'fa-solid fa-medal', title: '24/7', desc: 'Customer Support in 40 languages' },
+  { isSpecial: true, title: 'Secure and Stable', desc: 'Advanced protection for your assets' },
+  { icon: 'fa-solid fa-calendar-check', title: '6 years with you', desc: 'Reliable service since the beginning' },
+  { icon: 'fa-solid fa-bolt', title: 'Trade Fast', desc: 'High-performance matching engine' }
+]);
 </script>
 
 <style scoped>
+.trust-section-root {
+  @apply w-full max-w-[1200px] mx-auto mt-10 mb-32 transition-colors duration-500;
+}
+
 .trust-header {
-  @apply text-3xl md:text-4xl font-[900] mb-16 tracking-tight text-center;
+  @apply text-2xl md:text-3xl font-bold mb-10 text-center -mt-[150px];
   color: var(--text-color);
 }
 
-.text-accent {
-  color: var(--accent-hover);
-}
-
-.trust-item {
-  @apply flex flex-col items-center text-center cursor-default;
+/* کارت‌ها */
+.trust-card {
+  @apply flex flex-col items-center text-center p-10 rounded-[32px] transition-all duration-500 justify-center h-[260px];
+  /* در موبایل پس‌زمینه دارد، در دسکتاپ شفاف می‌شود */
+  background-color: var(--card-bg); 
 }
 
 .icon-box {
-  @apply h-20 flex items-center justify-center mb-6 text-[45px] transition-transform duration-300 group-hover:scale-110;
+  @apply mb-4 text-5xl flex items-center justify-center;
   color: var(--secondary-text);
 }
 
-.stat-icon-font {
-  @apply transition-colors duration-300;
-}
-.trust-item:hover .stat-icon-font {
-  color: var(--accent-hover);
-}
-
-.secure-logo-circle {
-  @apply w-[52px] h-[52px] rounded-full flex items-center justify-center transition-colors duration-300;
-  background-color: var(--secondary-text);
-}
-
-.trust-item:hover .secure-logo-circle {
-  background-color: var(--accent-hover);
-}
-
-.diamond-shape {
-  @apply w-3.5 h-3.5 bg-white rotate-45;
-}
-
 .trust-h3 {
-  @apply text-xl font-[800] mb-3;
+  @apply text-xl font-bold mb-2;
   color: var(--text-color);
 }
 
 .trust-p {
-  @apply text-sm font-medium leading-relaxed max-w-[200px];
+  @apply text-sm leading-relaxed max-w-[200px] mx-auto;
   color: var(--secondary-text);
 }
 
-/* بهینه‌سازی ریسپانسیو */
-@media (max-width: 640px) {
-  .trust-header { @apply text-2xl mb-10; }
-  .icon-box { @apply mb-4 text-[38px]; }
+/* استایل آیکون خاص */
+.secure-logo-circle {
+  @apply w-14 h-14 rounded-full flex items-center justify-center;
+  background-color: var(--secondary-text);
+}
+
+.diamond-shape {
+  @apply w-3.5 h-3.5 bg-white dark:bg-gray-900 rotate-45;
+}
+
+/* استایل Pagination */
+.trust-swiper {
+  @apply pb-14 overflow-visible;
+}
+
+:deep(.swiper-pagination) {
+  @apply flex justify-center items-center gap-2;
+  bottom: 10px !important;
+}
+
+:deep(.swiper-pagination-bullet) {
+  @apply w-[18px] h-[4px] rounded-full opacity-100 transition-all duration-300 mx-0 !important;
+  background-color: var(--border-color) !important;
+}
+
+:deep(.swiper-pagination-bullet-active) {
+  @apply w-[36px] !important;
+  background-color: var(--text-color) !important;
+}
+
+/* تنظیمات حالت دسکتاپ */
+@media (min-width: 1024px) {
+  .trust-card {
+    background-color: transparent !important; /* حذف پس‌زمینه در دسکتاپ مطابق طرح شما */
+    height: auto;
+    @apply p-0;
+  }
+
+  .trust-swiper :deep(.swiper-wrapper) {
+    @apply grid grid-cols-4 gap-6 transform-none !important;
+    display: grid;
+  }
+  
+  .trust-swiper :deep(.swiper-pagination) {
+    @apply hidden !important;
+  }
 }
 </style>

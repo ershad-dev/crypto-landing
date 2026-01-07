@@ -1,68 +1,92 @@
 <template>
-  <section class="max-w-[1250px] mx-auto px-6 pb-32 relative">
-    <div class="hidden xl:flex absolute -right-6 top-1/2 -translate-y-1/2 w-14 h-14 bg-white dark:bg-gray-800 rounded-full shadow-xl items-center justify-center cursor-pointer z-10 border border-[var(--border-color)] hover:bg-[#1e2329] hover:text-white dark:hover:bg-[#f0b90b] transition-all group/nav">
-      <i class="fa-solid fa-chevron-right text-lg"></i>
-    </div>
+  <section class="bitcoin-section">
+    <div class="max-w-[1000px] mx-auto px-6">
+      <div class="text-left">
+        <h2 class="bitcoin-title">What is Bitcoin?</h2>
+        
+        <div class="bitcoin-content mt-8">
+          <p class="content-subtitle">What is Bitcoin (BTC)?</p>
+          
+          <p class="text-desc inline">
+            Bitcoin is one of the most popular cryptocurrencies in the market. First introduced in 2009 by Satoshi Nakamoto, Bitcoin continues to be the top cryptocurrency by market capitalization<span v-show="!isExpanded" class="font-bold">...</span>
+          </p>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <div v-for="(article, index) in articles" :key="index" class="article-card group">
-        <span class="badge">{{ article.category }}</span>
-        <h3 class="article-h3">{{ article.title }}</h3>
-        <p class="article-p">{{ article.desc }}</p>
-        <a href="#" class="read-more">
-          Read More 
-          <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-2"></i>
-        </a>
+          <div class="expandable-content" :class="{ 'is-expanded': isExpanded }">
+            <p class="text-desc inline">
+              Bitcoin paved the way for many existing altcoins in the market and marked a pivotal moment for digital payment solutions. Bitcoin recorded a new all-time high of $111,970 in May 2025, pushing the crypto market capitalization to an impressive $3.5 trillion.
+            </p>
+            <p class="text-desc mt-4 block">
+              As the world's first cryptocurrency, Bitcoin has come a long way in terms of its value. Bitcoin crossed $108K, reaching an all-time high in December 2024.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-4 text-left">
+          <button @click="isExpanded = !isExpanded" class="show-more-btn">
+            {{ isExpanded ? 'Show Less' : 'Show More' }}
+            <i :class="['fa-solid ml-1 text-[10px]', isExpanded ? 'fa-chevron-up' : 'fa-chevron-down']"></i>
+          </button>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
-const articles = [
-  {
-    category: 'Education',
-    title: 'What is Bitcoin?',
-    desc: "Bitcoin (BTC) is the world's first decentralized cryptocurrency. Launched in 2009, it introduced blockchain technology to the world."
-  },
-  {
-    category: 'Market',
-    title: 'Bitcoin Market Momentum',
-    desc: "By May 2025, the total crypto market cap reached $3.5 trillion, solidifying BTC's position as 'Digital Gold' for investors."
-  }
-]
+import { ref } from 'vue'
+
+// مدیریت وضعیت باز و بسته بودن در تمام دیوایس‌ها
+const isExpanded = ref(false)
 </script>
 
 <style scoped>
-.article-card {
-  @apply p-8 md:p-12 rounded-[32px] text-left transition-all duration-500 border;
-  background-color: var(--card-bg);
-  border-color: var(--border-color);
+/* سازگاری کامل با تم لایت و دارک */
+.bitcoin-section {
+  @apply py-16 md:py-24 transition-colors duration-500;
+  background-color: var(--bg-color);
 }
 
-.article-card:hover {
-  @apply -translate-y-2 shadow-2xl;
-  border-color: rgba(240, 185, 11, 0.5);
-}
-
-.badge {
-  @apply px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-widest mb-6 inline-block;
-  background-color: rgba(128, 128, 128, 0.1);
-  color: var(--secondary-text);
-}
-
-.article-h3 { 
-  @apply text-2xl md:text-3xl font-[850] mb-4 leading-tight; 
+.bitcoin-title {
+  @apply text-3xl md:text-4xl font-bold;
   color: var(--text-color);
 }
 
-.article-p { 
-  @apply text-sm md:text-base leading-relaxed mb-8 opacity-80; 
+.content-subtitle {
+  @apply font-bold mb-4;
+  color: var(--text-color);
+}
+
+.text-desc {
+  @apply text-[15px] md:text-[16px] leading-[1.8] font-normal;
   color: var(--secondary-text);
 }
 
-.read-more { 
-  @apply font-bold text-sm md:text-base flex items-center gap-2 transition-opacity hover:opacity-80;
-  color: #f0b90b;
+.show-more-btn {
+  @apply text-[#f0b90b] font-bold text-sm transition-all hover:opacity-80 flex items-center cursor-pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* بخش تاشو */
+.expandable-content {
+  @apply overflow-hidden transition-all duration-500 max-h-0 opacity-0;
+}
+
+/* وقتی کلاس is-expanded اضافه می‌شود، محتوا باز می‌شود */
+.expandable-content.is-expanded {
+  @apply max-h-[1000px] opacity-100 mt-2;
+  /* اضافه کردن یک انیمیشن نرم برای ورود متن */
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* حذف تنظیمات قبلی که در دسکتاپ همیشه نمایش می‌داد */
+@media (min-width: 1024px) {
+  /* دیگر نیازی به نمایش اجباری در دسکتاپ نیست چون دکمه فعال است */
 }
 </style>

@@ -1,102 +1,154 @@
 <template>
-  <section class="py-16 md:py-24 bg-[var(--bg-color)] transition-colors duration-300">
-    <div class="max-w-[1250px] mx-auto px-6 text-center">
+  <section class="tools-section">
+    <div class="max-w-[1250px] mx-auto px-6">
       
       <h2 class="section-title">
         Advanced Crypto Trading Tools for Faster, Smarter Transactions
       </h2>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div v-for="(tool, index) in tools" :key="index" class="tool-card group">
-          <div class="gold-icon-container">25X</div>
-          <h4 class="tool-title">{{ tool.title }}</h4>
-          <p class="tool-desc">{{ tool.desc }}</p>
-          
-          <div class="tool-footer border-[var(--border-color)]">
-            <span v-if="tool.badge" class="leverage-badge">{{ tool.badge }}</span>
-            <a href="#" class="action-link">
-              {{ tool.actionText }} 
-              <i class="fa-solid fa-chevron-right text-[10px] ml-1 transition-transform group-hover:translate-x-1"></i>
-            </a>
-          </div>
-        </div>
-      </div>
+      <ClientOnly>
+        <swiper
+          :modules="[SwiperPagination]"
+          :slides-per-view="1"
+          :space-between="20"
+          :pagination="{ clickable: true }"
+          :breakpoints="{
+            '768': { slidesPerView: 2, enabled: false },
+            '1024': { slidesPerView: 3, enabled: false }
+          }"
+          class="tools-swiper"
+        >
+          <swiper-slide v-for="(tool, index) in toolsList" :key="index" class="pb-12 md:pb-0">
+            <div class="tool-card group">
+              <div class="icon-container">
+                <img 
+                  :src="tool.image" 
+                  :alt="tool.title" 
+                  class="responsive-card-img"
+                >
+              </div>
+
+              <h4 class="tool-title">{{ tool.title }}</h4>
+              <p class="tool-desc">{{ tool.desc }}</p>
+              
+              <div class="card-footer">
+                <span v-if="tool.badge" class="badge-text">{{ tool.badge }}</span>
+                <a href="#" class="trade-link">{{ tool.actionText }}</a>
+              </div>
+            </div>
+          </swiper-slide>
+        </swiper>
+      </ClientOnly>
 
     </div>
   </section>
 </template>
 
 <script setup>
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Pagination as SwiperPagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
-const tools = [
+import img25x from '~/assets/images/25x.png';
+
+const toolsList = [
   {
     title: "Trade Over 400+ Cryptocurrencies Instantly",
     desc: "Trade Bitcoin, Ethereum, and other perpetual swap contracts with up to 100x leverage on Poloniex Futures.",
     actionText: "Trade",
-    badge: null
+    image: img25x 
   },
   {
     title: "Futures Trading with Up to 100x Leverage",
-    desc: "Trade Bitcoin, Ethereum, and other perpetual swap contracts with up to 100x leverage on Poloniex Futures.",
+    desc: "Trade Bitcoin, Ethereum, and other perpetual swap contracts with up to 100x leverage on Poloniex Futures..",
     actionText: "Trade",
-    badge: "30x max leverage"
+    badge: "30x max leverage",
+    image: img25x
   },
   {
-    title: "Earn Passive Income with Staking & Lending",
-    desc: "Trade Bitcoin, Ethereum, and other perpetual swap contracts with up to 100x leverage on Poloniex Futures.",
+    title: "Earn Passive Income with Crypto Staking & Lending",
+    desc: "Trade Bitcoin, Ethereum, and other perpetual swap contracts with up to 100x leverage on Poloniex Futures..",
     actionText: "Earn money",
-    badge: null
+    image: img25x
   }
 ]
 </script>
 
 <style scoped>
+.tools-section {
+  @apply py-16 transition-colors duration-500 overflow-hidden;
+  background-color: var(--bg-color);
+}
 
 .section-title {
-  @apply text-3xl md:text-4xl font-[900] mb-16 leading-tight tracking-tight max-w-3xl mx-auto;
+  @apply text-2xl md:text-[28px] font-bold text-center mb-12 max-w-3xl mx-auto -mt-10 leading-tight;
   color: var(--text-color);
 }
 
+/* کارت ابزار */
 .tool-card {
-  background-color: var(--card-bg);
-  @apply border border-[var(--border-color)] 
-         rounded-[32px] p-10 text-left flex flex-col min-h-[420px]
-         transition-all duration-300 hover:-translate-y-4 hover:shadow-2xl;
-  box-shadow: 0 10px 30px -15px var(--shadow);
+  @apply rounded-[24px] p-6 flex flex-col min-h-[360px] md:min-h-[350px] h-full 
+         transition-all duration-300 border border-transparent shadow-sm;
+  background-color: var(--card-bg); /* تغییر خودکار در دارک مود */
 }
 
 .tool-card:hover {
-  border-color: #f0b90b; 
+  @apply shadow-md -translate-y-1;
+  border-color: var(--border-color);
 }
 
-.gold-icon-container {
-  @apply text-4xl font-[1000] mb-8 inline-block transition-transform duration-300 group-hover:scale-110 select-none;
-  background: linear-gradient(135deg, #e6b94d 0%, #fff3a6 50%, #b8860b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+.icon-container {
+  @apply flex justify-center items-center mb-4 h-24 md:h-20;
+}
+
+.responsive-card-img {
+  @apply w-[120px] md:w-[70px] h-auto object-contain block;
 }
 
 .tool-title {
-  @apply text-xl font-[850] mb-4 leading-snug;
+  @apply text-[18px] md:text-[19px] font-bold mb-3 leading-[1.3] text-left;
   color: var(--text-color);
 }
 
 .tool-desc {
-  @apply text-sm leading-relaxed mb-auto opacity-90;
+  @apply text-[13px] leading-[1.5] mb-4 font-medium text-left;
   color: var(--secondary-text);
 }
 
-.tool-footer {
-  @apply flex justify-between items-center mt-8 pt-6 border-t;
+.card-footer {
+  @apply mt-auto flex justify-between items-center pt-2;
 }
 
-.action-link {
-  @apply text-[#f0b90b] font-bold text-sm transition-all hover:opacity-80 flex items-center gap-1;
+.badge-text {
+  @apply text-[13px] font-medium opacity-80;
+  color: var(--secondary-text);
 }
 
-.leverage-badge {
-  @apply text-[11px] font-bold px-3 py-1.5 bg-gray-100 dark:bg-gray-800/50 rounded-lg uppercase tracking-wider;
-  color: var(--text-color);
+.trade-link {
+  @apply text-[#c99400] font-bold text-[15px] transition-all hover:text-[#f0b90b] ml-auto;
+}
+
+/* بهینه سازی Swiper و Pagination */
+.tools-swiper { overflow: visible; }
+
+:deep(.swiper-pagination-bullet) {
+  @apply w-8 h-[3px] rounded-none transition-all duration-300 opacity-40 mx-1 !important;
+  background-color: var(--secondary-text) !important;
+}
+
+:deep(.swiper-pagination-bullet-active) {
+  @apply opacity-100;
+  background-color: var(--text-color) !important;
+  width: 32px !important;
+}
+
+/* مدیریت نمایش گرید در دسکتاپ بدون تکرار کد */
+@media (min-width: 768px) {
+  .tools-swiper :deep(.swiper-wrapper) {
+    @apply grid grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6 transform-none !important;
+    display: grid;
+  }
+  .tools-swiper :deep(.swiper-pagination) { @apply hidden !important; }
 }
 </style>

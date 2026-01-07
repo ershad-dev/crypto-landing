@@ -3,11 +3,11 @@
     <div class="max-w-[1400px] mx-auto px-4 md:px-10">
       
       <header class="market-header">
-        <h2 class="market-title">
+        <h2 class="market-title flex justify-center ">
           Live Cryptocurrency Prices Market Data
         </h2>
-        <p class="market-subtitle">
-          Stay updated with the latest market movements across the globe.
+        <p class="market-subtitle flex justify-center">
+          Top Gainers Today
         </p>
       </header>
 
@@ -28,7 +28,7 @@
 
 <style scoped>
 .market-main-section {
-  @apply py-16 md:py-24 transition-colors duration-500;
+  @apply py-16  transition-colors duration-500 -mt-20;
   background-color: var(--bg-color);
 }
 
@@ -37,8 +37,9 @@
 }
 
 .market-title {
-  @apply text-3xl md:text-4xl font-[900] tracking-tight;
+  @apply text-3xl md:text-4xl font-[500] tracking-tight;
   color: var(--text-color);
+  
 }
 
 .market-subtitle {

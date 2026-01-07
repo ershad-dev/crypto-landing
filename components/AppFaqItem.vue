@@ -1,27 +1,22 @@
 <template>
-  <div class="faq-item group" :class="{ 'is-active': isOpen }">
+  <div class="faq-item" :class="{ 'is-active': isOpen }">
     <div 
-      class="flex justify-between items-center p-6 md:p-8 cursor-pointer select-none" 
+      class="flex justify-between items-center py-3.5 px-4 md:py-6 md:px-6 cursor-pointer select-none" 
       @click="$emit('toggle')"
     >
       <span class="question-text">{{ question }}</span>
       
-      <div class="icon-circle">
+      <div class="icon-box">
         <i 
-          class="fa-solid fa-chevron-down text-[10px] transition-transform duration-500"
-          :class="{ 'rotate-180 text-black': isOpen }"
+          class="fa-solid transition-all duration-300 text-[10px]"
+          :class="isOpen ? 'fa-minus' : 'fa-plus'"
         ></i>
       </div>
     </div>
 
-    <transition
-      @before-enter="beforeEnter"
-      @enter="enter"
-      @before-leave="beforeLeave"
-      @leave="leave"
-    >
-      <div v-if="isOpen" class="content-wrapper">
-        <div class="px-6 md:px-8 pb-8 answer-text">
+    <transition name="accordion">
+      <div v-show="isOpen" class="content-wrapper">
+        <div class="px-4 md:px-6 pb-5 answer-text">
           {{ answer }}
         </div>
       </div>
@@ -30,68 +25,64 @@
 </template>
 
 <script setup>
-/*
-  دریافت پروپ‌ها و رویدادها
- */
 defineProps({
   question: String,
   answer: String,
   isOpen: Boolean
 })
 defineEmits(['toggle'])
-
-
-const beforeEnter = (el) => { el.style.height = '0'; el.style.opacity = '0'; }
-const enter = (el) => { 
-  el.style.height = el.scrollHeight + 'px'; 
-  el.style.opacity = '1';
-}
-const beforeLeave = (el) => { el.style.height = el.scrollHeight + 'px'; el.style.opacity = '1'; }
-const leave = (el) => { el.style.height = '0'; el.style.opacity = '0'; }
 </script>
 
 <style scoped>
+/* سازگاری کامل با متغیرهای تم */
 .faq-item {
-  @apply border border-[var(--border-color)] rounded-[24px] transition-all duration-300;
-  background-color: var(--card-bg);
+  @apply w-full border rounded-[12px] md:rounded-[16px] transition-all duration-300 mb-2;
+  background-color: var(--card-bg); /* تغییر خودکار در دارک مود */
+  border-color: var(--border-color);
 }
 
-/* استایل حالت فعال */
 .faq-item.is-active {
-  @apply shadow-xl;
-  border-color: var(--accent-hover);
-  box-shadow: 0 10px 25px -10px rgba(240, 185, 11, 0.15);
+  border-color: #D7A81C;
+  @apply shadow-sm;
 }
 
 .question-text {
-  @apply text-base md:text-lg font-bold pr-4 transition-colors duration-300;
+  @apply text-[15px] md:text-[17px] font-bold pr-2 leading-tight;
   color: var(--text-color);
 }
 
-.faq-item:hover .question-text {
-  color: var(--accent-hover);
-}
-
 .answer-text {
-  @apply text-sm md:text-base leading-relaxed;
+  @apply text-[14px] md:text-base leading-relaxed;
   color: var(--secondary-text);
 }
 
-/* نگهدارنده انیمیشن */
+.icon-box {
+  @apply w-6 h-6 md:w-7 md:h-7 rounded-full border flex items-center justify-center shrink-0 transition-all duration-300;
+  border-color: var(--border-color);
+  color: var(--secondary-text);
+}
+
+/* حذف !important و استفاده از specificity برای تغییر رنگ آیکون در حالت فعال */
+.faq-item.is-active .icon-box {
+  background-color: #D7A81C;
+  border-color: #D7A81C;
+  color: #ffffff;
+}
+
+/* انیمیشن آکاردئونی تمیز بدون جاوا اسکریپت اضافه */
 .content-wrapper {
-  @apply overflow-hidden transition-[height,opacity] duration-300 ease-in-out;
+  @apply overflow-hidden transition-all duration-500 ease-in-out;
 }
 
-/* دایره آیکون کناری */
-.icon-circle {
-  @apply w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300;
-  background-color: var(--table-hover);
-  color: var(--secondary-text);
+.accordion-enter-from,
+.accordion-leave-to {
+  max-height: 0;
+  opacity: 0;
 }
 
-.faq-item:hover .icon-circle,
-.faq-item.is-active .icon-circle {
-  background-color: var(--accent-color);
-  color: #000;
+.accordion-enter-to,
+.accordion-leave-from {
+  max-height: 500px; /* یک مقدار امن برای باز شدن */
+  opacity: 1;
 }
 </style>

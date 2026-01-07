@@ -1,16 +1,16 @@
 <template>
   <section class="stats-section">
-    <div class="max-w-[1400px] mx-auto">
+    <div class="max-w-[1400px] mx-auto px-4">
       
       <h2 class="stats-main-title">
-        Why <span class="text-accent">US?</span>
+        Why US?
       </h2>
       
       <div class="stats-card-wrapper">
         <div 
           v-for="(stat, index) in stats" 
           :key="index" 
-          class="stat-group group"
+          class="stat-group"
         >
           <div class="stat-value">{{ stat.value }}</div>
           <div class="stat-label">{{ stat.desc }}</div>
@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-// داده‌های آمار سایت (ثابت)
+// استفاده از readonly برای داده‌های ثابت ایده خوبی است
 const stats = readonly([
   { value: '2,334,894', desc: 'registered users' },
   { value: '+700 Coins', desc: 'Newest coins' },
@@ -33,51 +33,59 @@ const stats = readonly([
 
 <style scoped>
 .stats-section {
-  @apply py-16 md:py-24 transition-colors duration-500 px-4;
+  @apply py-16 md:py-24 transition-colors duration-500;
   background-color: var(--bg-color);
 }
 
 .stats-main-title {
-  @apply text-4xl md:text-5xl font-[900] text-center mb-12 tracking-tight;
+  @apply text-4xl md:text-5xl font-medium text-center mb-10 md:mb-16 tracking-tight;
   color: var(--text-color);
-}
-
-.text-accent {
-  color: var(--accent-hover);
 }
 
 .stats-card-wrapper {
-  @apply flex flex-wrap lg:flex-nowrap justify-around items-center py-12 md:py-16 px-6 
-         rounded-[32px] border transition-all duration-500;
+  /* تنظیم گرید در موبایل و فلکس در دسکتاپ */
+  @apply grid grid-cols-2 lg:flex lg:flex-nowrap justify-around items-center 
+         py-8 md:py-16 w-full rounded-2xl md:rounded-[32px] 
+         transition-all duration-500;
   background-color: var(--card-bg);
-  border-color: var(--border-color);
+  border: 1px solid var(--border-color);
 }
 
 .stat-group {
-  @apply flex-1 min-w-[200px] text-center px-4 py-6 lg:py-0 
-         relative transition-all duration-300 cursor-default hover:-translate-y-2;
+  @apply text-center py-8 px-4 transition-all duration-300 cursor-default flex flex-col items-center;
+}
+
+/* مدیریت خطوط جداکننده در موبایل بدون استفاده از nth-child پیچیده */
+@media (max-width: 1023px) {
+  .stat-group {
+    @apply border-b border-gray-100/10;
+    border-color: var(--border-color);
+  }
+  .stat-group:nth-child(odd) {
+    @apply border-r;
+  }
+  .stat-group:nth-last-child(-n+2) {
+    @apply border-b-0;
+  }
 }
 
 .stat-value {
-  @apply text-3xl md:text-4xl font-extrabold mb-3 transition-colors duration-300;
+  @apply text-xl sm:text-2xl md:text-3xl font-bold mb-2 transition-colors duration-300;
   color: var(--text-color);
 }
 
-.stat-group:hover .stat-value {
-  color: var(--accent-hover);
-}
-
 .stat-label {
-  @apply text-sm font-semibold uppercase tracking-widest transition-colors duration-300;
+  @apply text-sm md:text-base font-medium;
   color: var(--secondary-text);
 }
 
-/* خطوط جداکننده عمودی در دسکتاپ */
+/* افکت هوور فقط برای دسکتاپ جهت تمیزی UX */
 @media (min-width: 1024px) {
-  .stat-group:not(:last-child)::after {
-    content: "";
-    @apply absolute right-0 top-1/4 h-1/2 w-[1px];
-    background-color: var(--border-color);
+  .stat-group:hover {
+    @apply -translate-y-2;
+  }
+  .stat-group:hover .stat-value {
+    color: #f0b90b; /* رنگ زرد برند */
   }
 }
 </style>

@@ -1,4 +1,4 @@
-<template>
+<template >
   <transition name="mobile-menu">
     <div v-if="isOpen" class="mobile-menu-root">
       <div class="p-4 space-y-2">

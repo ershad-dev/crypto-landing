@@ -3,16 +3,25 @@
     <li 
       v-for="menu in menuData" 
       :key="menu.title" 
-      class="menu-item-wrapper group"
+      class="menu-item-wrapper"
+      @click.stop="toggleMenu(menu.title)"
     >
-      <div class="menu-trigger">
+      <div 
+        class="menu-trigger" 
+        :class="{ 'text-accent-yellow': activeMenu === menu.title }"
+      >
         {{ menu.title }} 
         <i v-if="menu.links || menu.items" 
-           class="fa-solid fa-chevron-down chevron-icon">
+           class="fa-solid fa-chevron-down chevron-icon"
+           :class="{ 'rotate-180': activeMenu === menu.title }">
         </i>
       </div>
       
-      <div v-if="menu.links || menu.items" class="dropdown-container">
+      <div 
+        v-if="activeMenu === menu.title && (menu.links || menu.items)" 
+        class="dropdown-container"
+        @click.stop
+      >
         <div v-if="menu.links" class="wide-menu">
           <div 
             v-for="link in menu.links" 
@@ -41,35 +50,67 @@
 </template>
 
 <script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+
 defineProps(['menuData'])
+
+const activeMenu = ref(null)
+
+// باز و بسته کردن منو
+const toggleMenu = (title) => {
+  activeMenu.value = activeMenu.value === title ? null : title
+}
+
+// بستن منو با کلیک در خارج از آن
+const handleGlobalClick = () => {
+  activeMenu.value = null
+}
+
+onMounted(() => {
+  window.addEventListener('click', handleGlobalClick)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('click', handleGlobalClick)
+})
 </script>
 
 <style scoped>
 .nav-menu-root {
-  @apply hidden lg:flex items-center gap-1 list-none m-0 p-0;
+  @apply hidden lg:flex items-center list-none m-0 p-0 gap-4;
 }
 
 .menu-item-wrapper {
-
-  @apply relative px-3 py-4 text-sm font-bold cursor-pointer transition-colors;
+  @apply relative py-2 text-sm font-bold cursor-pointer transition-colors;
   color: var(--text-color);
 }
 
 .menu-trigger {
-  @apply flex items-center gap-1.5 py-2 px-3 rounded-md transition-colors;
+  @apply flex items-center gap-1.5 py-1 px-1 transition-colors duration-200;
 }
 
-.menu-item-wrapper:hover .menu-trigger {
-  background-color: var(--table-hover);
+/* هاور فقط رنگ را تغییر دهد (زرد صرافی) */
+.menu-trigger:hover {
+  color: #f0b90b; 
+}
+
+/* استایل وضعیت فعال (وقتی منو باز است) */
+.text-accent-yellow {
+  color: #f0b90b !important;
 }
 
 .chevron-icon {
-  @apply text-[10px] opacity-60 transition-transform duration-300 group-hover:rotate-180;
+  @apply text-[10px] opacity-60 transition-transform duration-300;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
 }
 
 /* کانتینر دراپ‌داون */
 .dropdown-container {
-  @apply absolute top-[80%] left-0 hidden group-hover:block p-2 rounded-2xl shadow-2xl z-50 min-w-[220px] border;
+  /* حذف hidden و group-hover چون با v-if مدیریت می‌شود */
+  @apply absolute top-[110%] left-0 block p-2 rounded-2xl shadow-2xl z-50 min-w-[220px] border;
   background-color: var(--card-bg);
   border-color: var(--border-color);
   animation: dropdownFadeIn 0.2s ease-out;
@@ -97,7 +138,6 @@ defineProps(['menuData'])
   color: var(--secondary-text);
 }
 
-/* استایل منوی ساده */
 .simple-menu {
   @apply flex flex-col gap-1;
 }
