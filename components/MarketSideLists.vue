@@ -119,4 +119,4 @@ const losersList = ref([
     margin-top: 80px;
   }
 }
-</style>
+</style>  

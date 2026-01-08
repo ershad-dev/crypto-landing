@@ -1,5 +1,5 @@
 <template>
-  <div class="market-section-root">
+  <section class="market-section-root">
     <div class="card-header">
       <div class="tabs-container">
         <span 
@@ -34,8 +34,8 @@
           <div class="flex flex-col">
             <div class="flex items-center gap-1.5">
               <span class="symbol-text">{{ coin.symbol }}</span>
-              <span class="text-[10px] opacity-40 font-bold hidden md:inline">/USDT</span>
-              <i v-if="index < 3" class="fa-solid fa-fire text-[#f0b90b] text-[11px]"></i>
+              <span class="pair-text hidden md:inline">/USDT</span>
+              <i v-if="index < 3" class="fa-solid fa-fire fire-icon"></i>
             </div>
             <span class="name-text">{{ coin.name }}</span>
           </div>
@@ -43,9 +43,9 @@
 
         <div class="flex flex-col md:block text-right md:text-left">
           <span class="price-text">${{ coin.price }}</span>
-            <span :class="['change-text md:hidden mt-0.5', coin.change >= 0 ? 'up' : 'down']">
-              {{ coin.change >= 0 ? '+' : '' }}{{ coin.change }}%
-            </span>
+          <span :class="['change-text md:hidden mt-0.5', coin.change >= 0 ? 'up' : 'down']">
+            {{ coin.change >= 0 ? '+' : '' }}{{ coin.change }}%
+          </span>
         </div>
 
         <div class="hidden md:block volume-text">
@@ -64,10 +64,12 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>
+import { ref, readonly } from 'vue'
+
 const activeTab = ref('futures')
 const tabs = [
   { id: 'futures', label: 'Hot Futures' },
@@ -100,11 +102,11 @@ const handleImageError = (e) => {
   @apply flex justify-between items-center mb-6 px-2;
 }
 
-/* --- استایل بردر دور جدول با پشتیبانی از تم --- */
+/* --- استایل هوشمند کانتینر جدول --- */
 .coins-list {
-  border: 1px solid var(--border-color); /* بردر داینامیک */
-  background-color: var(--card-bg); /* تغییر خودکار از لایت به دارک */
-  @apply rounded-[24px] overflow-hidden transition-colors duration-500;
+  @apply rounded-[24px] overflow-hidden transition-colors duration-500 border;
+  border-color: var(--border-color);
+  background-color: var(--card-bg);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
 }
 
@@ -120,30 +122,42 @@ const handleImageError = (e) => {
 .active-tab {
   @apply border-b-[3px];
   color: var(--text-color);
-  border-color: #f0b90b; /* رنگ زرد ثابت برای تب فعال */
+  border-color: #f0b90b; /* رنگ ثابت برند برای تب فعال */
 }
 
 .more-link {
-  @apply text-gray-500 text-[15px] font-bold flex items-center gap-1 transition-all hover:text-black dark:hover:text-white;
+  @apply text-gray-500 text-[15px] font-bold flex items-center gap-1 transition-all;
 }
-.more-link:hover { @apply gap-2; }
+.more-link:hover {
+  @apply gap-2;
+  color: var(--text-color);
+}
 
 .coin-row {
   @apply flex justify-between md:grid md:grid-cols-[2fr_1.2fr_1.2fr_1fr_100px] items-center 
          py-5 px-6 transition-all border-b;
-  border-color: var(--border-color); /* بردر ردیف‌ها */
+  border-color: var(--border-color);
 }
 
 .coin-row:last-child {
-  border-bottom: none;
+  @apply border-none;
 }
 
 .coin-row:hover {
-  background-color: var(--hover-bg); /* استفاده از رنگ هوور تم */
+  background-color: var(--hover-bg);
 }
 
 .coin-icon {
   @apply w-9 h-9 md:w-10 md:h-10 transition-transform duration-300 group-hover:rotate-12;
+}
+
+.pair-text {
+  @apply text-[10px] opacity-40 font-bold;
+  color: var(--secondary-text);
+}
+
+.fire-icon {
+  @apply text-[#f0b90b] text-[11px];
 }
 
 .symbol-text {
@@ -166,10 +180,10 @@ const handleImageError = (e) => {
   color: var(--secondary-text);
 }
 
-/* استایل درصد تغییرات (ثابت بماند چون رنگ سیگنالی است) */
+/* استایل درصد تغییرات */
 .change-text { @apply text-[13px] font-bold; }
-.change-text.up, .desktop-change-tag.up { @apply text-[#0ecb81]; }
-.change-text.down, .desktop-change-tag.down { @apply text-[#f6465d]; }
+.change-text.up, .desktop-change-tag.up { color: #0ecb81; }
+.change-text.down, .desktop-change-tag.down { color: #f6465d; }
 
 .desktop-change-tag {
   @apply font-bold text-base;

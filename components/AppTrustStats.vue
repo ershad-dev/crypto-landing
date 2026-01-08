@@ -3,9 +3,9 @@
     <h2 class="trust-header">Why Millions Trust US?</h2>
     
     <swiper
-      :modules="[SwiperPagination]"
-      :slides-per-view="1" 
-      :space-between="0"
+      :modules="[Pagination]"
+      :slides-per-view="1.2" 
+      :space-between="16"
       :centered-slides="true"
       :pagination="{ clickable: true }"
       :breakpoints="{
@@ -19,18 +19,16 @@
       class="trust-swiper"
     >
       <swiper-slide v-for="(stat, index) in stats" :key="index">
-        <div class="px-4 md:px-0 h-full">
-          <div class="trust-card">
-            <div class="icon-box">
-              <div v-if="stat.isSpecial" class="secure-logo-circle">
-                <div class="diamond-shape"></div>
-              </div>
-              <i v-else :class="stat.icon" class="stat-icon-font"></i>
+        <div class="trust-card">
+          <div class="icon-box">
+            <div v-if="stat.isSpecial" class="secure-logo-circle">
+              <div class="diamond-shape"></div>
             </div>
-
-            <h3 class="trust-h3">{{ stat.title }}</h3>
-            <p class="trust-p">{{ stat.desc }}</p>
+            <i v-else :class="stat.icon" class="stat-icon-font"></i>
           </div>
+
+          <h3 class="trust-h3">{{ stat.title }}</h3>
+          <p class="trust-p">{{ stat.desc }}</p>
         </div>
       </swiper-slide>
     </swiper>
@@ -44,8 +42,6 @@ import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-const SwiperPagination = Pagination;
-
 const stats = readonly([
   { icon: 'fa-solid fa-medal', title: '24/7', desc: 'Customer Support in 40 languages' },
   { isSpecial: true, title: 'Secure and Stable', desc: 'Advanced protection for your assets' },
@@ -56,80 +52,62 @@ const stats = readonly([
 
 <style scoped>
 .trust-section-root {
-  @apply w-full max-w-[1200px] mx-auto mt-10 mb-32 transition-colors duration-500;
+  @apply w-full max-w-[1200px] mx-auto mt-10 mb-32 transition-colors duration-500 px-4;
 }
 
 .trust-header {
-  @apply text-2xl md:text-3xl font-bold mb-10 text-center -mt-[150px];
+  @apply text-2xl md:text-3xl font-bold mb-10 text-center;
+  /* مقدار منفی مارجین هدر را اصلاح کردم تا در موبایل محتوا را نپوشاند */
   color: var(--text-color);
 }
 
-/* کارت‌ها */
 .trust-card {
-  @apply flex flex-col items-center text-center p-10 rounded-[32px] transition-all duration-500 justify-center h-[260px];
-  /* در موبایل پس‌زمینه دارد، در دسکتاپ شفاف می‌شود */
-  background-color: var(--card-bg); 
+  @apply flex flex-col items-center text-center p-8 rounded-[32px] transition-all duration-500 justify-center h-[260px];
+  background-color: var(--card-bg, #f5f5f5); 
 }
 
-.icon-box {
-  @apply mb-4 text-5xl flex items-center justify-center;
-  color: var(--secondary-text);
-}
+/* ... سایر استایل‌های آیکون و متن ثابت بماند ... */
 
-.trust-h3 {
-  @apply text-xl font-bold mb-2;
-  color: var(--text-color);
-}
+.icon-box { @apply mb-4 text-5xl flex items-center justify-center; color: var(--secondary-text); }
+.trust-h3 { @apply text-xl font-bold mb-2; color: var(--text-color); }
+.trust-p { @apply text-sm leading-relaxed max-w-[200px] mx-auto; color: var(--secondary-text); }
+.secure-logo-circle { @apply w-14 h-14 rounded-full flex items-center justify-center; background-color: var(--secondary-text); }
+.diamond-shape { @apply w-3.5 h-3.5 bg-white rotate-45; }
 
-.trust-p {
-  @apply text-sm leading-relaxed max-w-[200px] mx-auto;
-  color: var(--secondary-text);
-}
-
-/* استایل آیکون خاص */
-.secure-logo-circle {
-  @apply w-14 h-14 rounded-full flex items-center justify-center;
-  background-color: var(--secondary-text);
-}
-
-.diamond-shape {
-  @apply w-3.5 h-3.5 bg-white dark:bg-gray-900 rotate-45;
-}
-
-/* استایل Pagination */
+/* اصلاح Pagination */
 .trust-swiper {
-  @apply pb-14 overflow-visible;
+  @apply pb-14;
 }
 
 :deep(.swiper-pagination) {
-  @apply flex justify-center items-center gap-2;
-  bottom: 10px !important;
+  @apply flex justify-center items-center gap-2 !important;
+  bottom: 0px !important;
 }
 
 :deep(.swiper-pagination-bullet) {
-  @apply w-[18px] h-[4px] rounded-full opacity-100 transition-all duration-300 mx-0 !important;
-  background-color: var(--border-color) !important;
-}
-
-:deep(.swiper-pagination-bullet-active) {
-  @apply w-[36px] !important;
+  @apply w-[18px] h-[4px] rounded-full opacity-30 transition-all duration-300 mx-0 !important;
   background-color: var(--text-color) !important;
 }
 
-/* تنظیمات حالت دسکتاپ */
+:deep(.swiper-pagination-bullet-active) {
+  @apply w-[36px] opacity-100 !important;
+}
+
+/* تنظیمات حالت دسکتاپ - بسیار مهم */
 @media (min-width: 1024px) {
+  /* جلوگیری از تداخل با منطق Swiper در موبایل */
+  .trust-swiper :deep(.swiper-wrapper) {
+    @apply flex !important; /* به جای grid از flex استفاده کن چون swiper با flex کار می‌کند */
+    transform: none !important;
+  }
+
   .trust-card {
-    background-color: transparent !important; /* حذف پس‌زمینه در دسکتاپ مطابق طرح شما */
+    background-color: transparent !important;
     height: auto;
     @apply p-0;
   }
 
-  .trust-swiper :deep(.swiper-wrapper) {
-    @apply grid grid-cols-4 gap-6 transform-none !important;
-    display: grid;
-  }
-  
-  .trust-swiper :deep(.swiper-pagination) {
+  :deep(.swiper-pagination) {
     @apply hidden !important;
   }
 }
