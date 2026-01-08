@@ -5,29 +5,29 @@
     </h2>
     
     <swiper
-      :modules="[SwiperPagination]"
-      :slides-per-view="1"
-      :space-between="20"
+      :modules="[Pagination]"
+      :slides-per-view="1.1"
+      :space-between="16"
       :centered-slides="true"
-      :loop="false"
       :pagination="{ clickable: true }"
       :breakpoints="{
         '768': {
           slidesPerView: 2,
-          centeredSlides: false,
-          allowTouchMove: true
+          spaceBetween: 20,
+          centeredSlides: false
         },
         '1024': {
           slidesPerView: 3,
           spaceBetween: 24,
           centeredSlides: false,
-          allowTouchMove: false
+          allowTouchMove: false,
+          enabled: false 
         }
       }"
       class="reviews-swiper"
     >
       <swiper-slide v-for="(review, index) in reviews" :key="index">
-        <div class="px-4 md:px-0 h-full">
+        <div class="review-card-container">
           <div class="review-card">
             <div class="flex items-center gap-3 mb-4">
               <div class="user-avatar">
@@ -53,8 +53,6 @@ import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-const SwiperPagination = Pagination;
-
 const reviews = readonly([
   {
     name: 'Tony Marshall',
@@ -73,80 +71,72 @@ const reviews = readonly([
 
 <style scoped>
 .reviews-wrapper {
-  @apply mt-20 md:mt-32 max-w-[1200px] mx-auto;
+  @apply mt-20 md:mt-32 max-w-[1200px] mx-auto px-4;
 }
 
 .reviews-header {
-  @apply text-2xl md:text-3xl font-[600] mb-12 -mt-[110px];
-  /* تغییر رنگ به متغیر متنی اصلی */
+  @apply text-2xl md:text-3xl font-bold mb-12;
   color: var(--text-color);
 }
 
-/* استایل کارت مطابق عکس */
+.review-card-container {
+  @apply h-full py-2;
+}
+
 .review-card {
-  @apply p-8 md:p-10 rounded-[32px] text-left h-full transition-all duration-300;
-  /* جایگزینی رنگ ثابت با متغیر پس‌زمینه کارت */
+  @apply p-8 md:p-10 rounded-[32px] text-left transition-all duration-300 flex flex-col;
   background-color: var(--card-bg); 
-  min-height: 220px;
-  display: flex;
-  flex-direction: column;
+  min-height: 240px;
+  border: 1px solid transparent;
+}
+
+.review-card:hover {
+  border-color: var(--border-color);
+  transform: translateY(-5px);
 }
 
 .user-avatar {
-  @apply w-10 h-10 rounded-full flex items-center justify-center bg-[#929aa5] text-white text-sm;
+  @apply w-10 h-10 rounded-full flex items-center justify-center bg-gray-400 text-white text-sm;
 }
 
 .user-name {
   @apply font-bold text-base;
-  /* تغییر رنگ به متغیر متنی اصلی */
   color: var(--text-color);
 }
 
 .review-text {
   @apply text-[15px] font-medium leading-relaxed;
-  /* تغییر رنگ به متغیر متنی ثانویه برای خوانایی در دارک مود */
   color: var(--secondary-text); 
 }
 
-/* تنظیمات اسلایدر و خطوط پایین */
+/* استایل Pagination */
 .reviews-swiper {
-  @apply pb-14;
-}
-
-:deep(.swiper-pagination) {
-  @apply flex justify-center items-center gap-1.5;
-  bottom: 40px !important;
+  @apply pb-16;
 }
 
 :deep(.swiper-pagination-bullet) {
-  width: 16px !important;
-  height: 4px !important;
-  border-radius: 10px !important;
-  /* هماهنگی رنگ نقاط غیرفعال با خطوط تم */
-  background-color: var(--border-color) !important;
-  opacity: 1 !important;
-  margin: 0 !important;
-  transition: all 0.3s ease;
+  @apply w-4 h-1 rounded-full opacity-30 transition-all duration-300 !important;
+  background-color: var(--text-color) !important;
 }
 
 :deep(.swiper-pagination-bullet-active) {
-  width: 32px !important;
-  /* هماهنگی رنگ نقطه فعال با رنگ متن اصلی تم */
-  background-color: var(--text-color) !important; 
+  @apply w-8 opacity-100 !important;
 }
 
-/* در دسکتاپ اسلایدر را ثابت نگه می‌داریم */
+/* اصلاح چیدمان در دسکتاپ */
 @media (min-width: 1024px) {
-  .review-card {
-    min-height: 200px;
-  }
-  :deep(.swiper-wrapper) {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr);
+  .reviews-swiper :deep(.swiper-wrapper) {
+    @apply flex gap-6 !important;
     transform: none !important;
   }
+
+  .reviews-swiper :deep(.swiper-slide) {
+    @apply w-[calc(33.333%-16px)] !important;
+    margin: 0 !important;
+  }
+
   :deep(.swiper-pagination) {
-    display: none !important;
+    @apply hidden !important;
   }
 }
 </style>
